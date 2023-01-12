@@ -7,11 +7,11 @@
   },
   {
    "optionDest": "filenames",
-   "value": "D:/OneDrive - Politechnika Wroclawska/projectsPython/imageCompressor/main.py"
+   "value": "D:/Michal_share/projectsPython/imageCompressor/main.py"
   },
   {
    "optionDest": "onefile",
-   "value": false
+   "value": true
   },
   {
    "optionDest": "console",
@@ -19,7 +19,7 @@
   },
   {
    "optionDest": "icon_file",
-   "value": "D:/OneDrive - Politechnika Wroclawska/projectsPython/imageCompressor/icons/press.ico"
+   "value": "D:/Michal_share/projectsPython/imageCompressor/press.ico"
   },
   {
    "optionDest": "name",
@@ -75,15 +75,15 @@
   },
   {
    "optionDest": "datas",
-   "value": "D:/OneDrive - Politechnika Wroclawska/projectsPython/imageCompressor/env/lib/site-packages/customtkinter;customtkinter/"
+   "value": "D:/Michal_share/projectsPython/imageCompressor/imageMagick;imageMagick/"
   },
   {
    "optionDest": "datas",
-   "value": "D:/OneDrive - Politechnika Wroclawska/projectsPython/imageCompressor/imageMagick;imageMagick/"
+   "value": "D:/Michal_share/projectsPython/imageCompressor/env/Lib/site-packages/customtkinter;customtkinter/"
   },
   {
    "optionDest": "datas",
-   "value": "D:/OneDrive - Politechnika Wroclawska/projectsPython/imageCompressor/icons;icons/"
+   "value": "D:/Michal_share/projectsPython/imageCompressor/config.ini;."
   }
  ],
  "nonPyinstallerOptions": {

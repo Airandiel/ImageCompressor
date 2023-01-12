@@ -24,6 +24,7 @@ def compress_dir_jpg(
         label_var.set("ROZPOCZĘTO")
         label_current_no.set("0/" + str(total_count))
         image_counter = 0
+        return_code = 0
         if isinstance(extension, str):
             extension = [extension]
         for dirpath, dirnames, filenames in os.walk(source_dir):
@@ -31,7 +32,7 @@ def compress_dir_jpg(
                 deep_output = output_dir + dirpath[len(source_dir) :]
                 for ext in extension:
                     if sum([ext in f for f in filenames]):
-                        image_counter = compress_dir_proc(
+                        image_counter, return_code = compress_dir_proc(
                             source_dir=dirpath,
                             output_dir=deep_output,
                             quality=quality,
@@ -44,10 +45,15 @@ def compress_dir_jpg(
                             error_var=error_var,
                             extension=ext,
                         )
+                        if return_code:
+                            raise ChildProcessError("Anulowano!")
 
     except Exception as e:
-        print(e)
-        error_var.set("Coś poszło nie tak")
+        print("Error: ", e)
+        # if e is ChildProcessError:
+        error_var.set(e)
+        # else:
+        #     error_var.set("Coś poszło nie tak")
 
     stop_btn_handle.configure(command=None)
     stop_btn_handle.grid_forget()
@@ -90,10 +96,12 @@ def compress_dir_proc(
     prev_filename = ""
     proc_im = execute(cmd)
     stop_btn_handle.configure(command=lambda: proc_im.terminate())
+    return_code = 0
 
     for line in read_process_output(proc_im, cmd):
         if line == 1:
             error_var.set("Anulowano!")
+            return_code = 1
             break
         filename = extract_filename(line, extension)
         if filename != extension:
@@ -106,7 +114,7 @@ def compress_dir_proc(
                 )
                 progress_bar_fn(float(image_counter / total_count))
 
-    return image_counter
+    return image_counter, return_code
 
 
 def recr_struct_count_im(source_dir, output_dir, extension):

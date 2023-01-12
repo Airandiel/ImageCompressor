@@ -23,7 +23,7 @@ config_path = os.path.abspath("config.ini")
 class App(customtkinter.CTk):
 
     WIDTH = 780
-    HEIGHT = 400
+    HEIGHT = 450
 
     def __init__(self):
         super().__init__()
@@ -35,7 +35,7 @@ class App(customtkinter.CTk):
             "WM_DELETE_WINDOW", self.on_closing
         )  # call .on_closing() when app gets closed
 
-        self.iconbitmap("icons/press.ico")
+        self.iconbitmap("press.ico")
 
         # ============ create two frames ============
         self.grid_columnconfigure(0, weight=1)
@@ -277,16 +277,16 @@ class App(customtkinter.CTk):
     def compress_images_thread(self):
         self.btn_start_comp.configure(state=tkinter.DISABLED)
         self.btn_stop_comp.grid(
-            row=1, column=4, columnspan=1, pady=10, padx=20
+            row=1, column=2, pady=10, padx=20
         )
         try:
             extensions = []
-            if self.check_png_var.get():
-                extensions.append(".png")
             if self.check_jpg_var.get():
                 extensions.append(".jpg")
             if self.check_jpeg_var.get():
                 extensions.append(".jpeg")
+            if self.check_png_var.get():
+                extensions.append(".png")
             compress_dir_jpg(
                 source_dir=self.source_dir.get(),
                 output_dir=self.output_dir.get(),
@@ -305,7 +305,16 @@ class App(customtkinter.CTk):
 
     def set_from_config(self):
         config = configparser.ConfigParser()
-        config.read(config_path)
+        if os.path.exists(config_path):
+            config.read(config_path)
+        else:
+            config.add_section("Main")
+            config["Main"]["last_source_dir"] = ""
+            config["Main"]["last_output_dir"] = ""
+            config["Main"]["quality"] = str(80)
+            config["Main"]["check_png"] = str(True)
+            config["Main"]["check_jpg"] = str(True)
+            config["Main"]["check_jpeg"] = str(True)
         self.source_dir.set(config["Main"]["last_source_dir"])
         self.output_dir.set(config["Main"]["last_output_dir"])
         self.quality.set(int(config["Main"]["quality"]))
@@ -320,12 +329,6 @@ class App(customtkinter.CTk):
 
         else:
             config.add_section("Main")
-            config["Main"]["last_source_dir"] = ""
-            config["Main"]["last_output_dir"] = ""
-            config["Main"]["quality"] = 80
-            config["Main"]["check_png"] = str(True)
-            config["Main"]["check_jpg"] = str(True)
-            config["Main"]["check_jpeg"] = str(True)
 
         config["Main"]["last_source_dir"] = self.source_dir.get()
         config["Main"]["last_output_dir"] = self.output_dir.get()
